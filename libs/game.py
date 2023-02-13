@@ -10,17 +10,21 @@ class Game:
         "expert": (30, 16, 99)
     }
     
-    def __init__(self, width, height, numberMinesRemaining):
+    def __init__(self, width, height, numberMines):
         self.width = width
         self.height = height
+        self.numberMines = numberMines
         
         self.minefield = [[Plot() for _ in range(width)] for _ in range(height)]
+        self.opened = 0
         
         numberPlotsRemaining = width * height
+        numberMinesRemaining = self.numberMines
         
         for j in range(height): 
             for i in range(width):
                 current = self.getPlot(j, i)
+                current.minefield = self
                 current.neighbors = self.identifyNeighbors(j, i) # For future uses
                 if numberMinesRemaining == 0: 
                     continue

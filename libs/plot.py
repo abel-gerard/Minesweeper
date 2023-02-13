@@ -4,6 +4,7 @@ class Plot:
         self.isMine = False
         self.isFlagged = False
         
+        self.minefield = None # To Be Announced when in a minefield
         self.neighbors = None # To Be Announced when in a minefield
     
     def __str__(self):
@@ -20,9 +21,10 @@ class Plot:
         if self.isMine: return 0
         else:
             self.isOpen = True
+            self.minefield.opened += 1
             if self.mineCountAround() == 0: # Recursive popping if adjacent 0-plots
                 for neighbor in self.neighbors:
-                    if not neighbor.isOpen and neighbor.mineCountAround() == 0: neighbor.pop()
+                    if not neighbor.isOpen: neighbor.pop()
             
             return 1
         
@@ -45,3 +47,6 @@ class Plot:
         if self.neighbors == None: raise AttributeError("Neighborhood not initialized.")
         return sum(map(lambda neighbor: neighbor.isMine, self.neighbors))
     
+    def allOpenAround(self):
+        if self.neighbors == None: raise AttributeError("Neighborhood not initialized.")
+        return all(map(lambda neighbor: neighbor.isOpen, self.neighbors))
